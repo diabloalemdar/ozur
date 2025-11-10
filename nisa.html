@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nisa, Özür Dilerim</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ffeef8 0%, #ffe0f0 25%, #ffd4e8 50%, #ffc4e0 75%, #ffb3d9 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 182, 193, 0.1) 0%, transparent 70%);
+            animation: float 20s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(50px, 50px) rotate(180deg); }
+        }
+
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ff9ec1 0%, #ffa6d5 50%, #ffb3e3 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeOut 1s ease-in-out 2.5s forwards;
+        }
+
+        .splash-screen h1 {
+            font-size: 3em;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        .container {
+            max-width: 600px;
+            width: 90%;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(255, 105, 180, 0.4), 0 0 40px rgba(255, 182, 193, 0.3);
+            text-align: center;
+            opacity: 0;
+            animation: fadeIn 1s ease-in-out 3s forwards;
+            border: 3px solid rgba(255, 182, 193, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .question-title {
+            font-size: 1.8em;
+            color: #ff69b4;
+            margin-bottom: 30px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(255, 105, 180, 0.2);
+            line-height: 1.4;
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            animation: shake 0.3s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0) translateY(-5px); }
+            25% { transform: translateX(-5px) translateY(-5px); }
+            75% { transform: translateX(5px) translateY(-5px); }
+        }
+
+        .btn-yes {
+            background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+        }
+
+        .btn-no {
+            background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+        }
+
+        .animal-container {
+            margin-top: 20px;
+            font-size: 4em;
+            animation: bounce 1s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .emoji-burst {
+            position: absolute;
+            font-size: 2em;
+            animation: burst 1s ease-out forwards;
+            pointer-events: none;
+        }
+
+        @keyframes burst {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--x), var(--y)) scale(0);
+            }
+        }
+
+        .final-message {
+            display: none;
+        }
+
+        .final-message.active {
+            display: block;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .sad-message {
+            display: none;
+        }
+
+        .sad-message.active {
+            display: block;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .sad-emoji {
+            font-size: 5em;
+            margin: 20px 0;
+            animation: cry 2s ease-in-out infinite;
+        }
+
+        @keyframes cry {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.1) rotate(-5deg); }
+            50% { transform: scale(1) rotate(0deg); }
+            75% { transform: scale(1.1) rotate(5deg); }
+        }
+
+        .message-box {
+            display: none;
+        }
+
+        .heart {
+            color: #ff1493;
+            display: inline-block;
+            animation: heartbeat 1s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="splash-screen">
+        <h1>Nisa, Özür Dilerim 💕</h1>
+    </div>
+
+    <div class="container">
+        <div class="question-container">
+            <h2 class="question-title" id="question-title"></h2>
+            <div class="buttons-container" id="buttons-container">
+                <button class="btn btn-yes" onclick="nextQuestion(true)">Evet</button>
+                <button class="btn btn-no" onclick="nextQuestion(false)">Hayır</button>
+            </div>
+        </div>
+
+        <div class="final-message" id="final-message">
+            <h2 class="question-title">Lütfen Ara veya WhatsApp'tan Yaz <span class="heart">❤️</span></h2>
+            <p style="color: #ff69b4; font-size: 1.5em; margin: 20px 0; font-weight: bold;">Seni Seviyorum</p>
+            <p style="color: #ff69b4; font-size: 1.2em; margin: 20px 0;">Konuşmamız lazım. Lütfen bekletme 💕</p>
+        </div>
+
+        <div class="sad-message" id="sad-message">
+            <div class="sad-emoji">😢</div>
+            <h2 class="question-title">Anlıyorum...</h2>
+            <p style="color: #ff69b4; font-size: 1.3em; margin: 20px 0; line-height: 1.6;">
+                Kararına saygı duyuyorum. Ama bilmeni isterim ki,<br>
+                seni hiç unutmayacağım ve her zaman özleyeceğim.<br><br>
+                Eğer bir gün fikrin değişirse,<br>
+                kapım her zaman sana açık. 💔
+            </p>
+        </div>
+
+        <div class="animal-container" id="animal"></div>
+    </div>
+
+    <script>
+        const questions = [
+            "Seni Üzdüğüm İçin Özür Dilerim. Barışalım Mı?",
+            "Aramızda Olan Her Şeyi Unutabilir Miyiz?",
+            "Bana Tekrar Gülümseme Hakkı Verir Misin?",
+            "Bana Bir Şans Daha Verir Misin?",
+            "Her Şeyi Düzeltmek İçin Çaba Gösterebilirmiyiz?",
+            "Seninle Tekrar Konuşabilir Miyiz?",
+            "Beni Affeder Misin?",
+            "Yeniden Birliktelik Kurabilir Miyiz?",
+            "Sana Değerli Olduğunu Gösterme Fırsatını Verir Misin?",
+            "İçimden Geçenleri Anlatabilir Miyim?",
+            "Benimle Tekrar Güzel Anılar Biriktirmek İster Misin?",
+            "Aramızdaki Duvarları Yıkabilir Miyiz?",
+            "Seni Ne Kadar Çok Özlediğimi Biliyor Musun?",
+            "Sensiz Geçen Bu Süre Çok Zor Oldu, Bana Dönüş Yolu Var Mı?",
+            "En Değerli Kaybım Sensin, Bunu Telafi Edebilir Miyim?"
+        ];
+
+        const animals = ['🐱', '🐶', '🐰', '🐻', '🐼', '🐨', '🦊', '🐹', '🐷', '🦁', '🐸', '🐵'];
+        const emojis = ['💕', '💖', '💗', '💓', '💝', '❤️', '💜', '💙', '🌸', '🌺', '🌼', '⭐', '✨'];
+        
+        let currentQuestion = 0;
+        let emojiInterval;
+
+        function getRandomAnimal() {
+            return animals[Math.floor(Math.random() * animals.length)];
+        }
+
+        function createEmojiAnimation() {
+            const container = document.querySelector('.container');
+            const emoji = document.createElement('div');
+            emoji.className = 'emoji-burst';
+            emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            
+            const x = (Math.random() - 0.5) * 200;
+            const y = (Math.random() - 0.5) * 200;
+            emoji.style.setProperty('--x', `${x}px`);
+            emoji.style.setProperty('--y', `${y}px`);
+            
+            const rect = document.getElementById('animal').getBoundingClientRect();
+            emoji.style.left = rect.left + rect.width / 2 + 'px';
+            emoji.style.top = rect.top + rect.height / 2 + 'px';
+            
+            document.body.appendChild(emoji);
+            setTimeout(() => emoji.remove(), 1000);
+        }
+
+        function startEmojiAnimation() {
+            emojiInterval = setInterval(createEmojiAnimation, 300);
+        }
+
+        function updateAnimal() {
+            document.getElementById('animal').textContent = getRandomAnimal();
+        }
+
+        function nextQuestion(answer) {
+            if (answer === true) {
+                // Evet dediyse direkt final mesaja geç
+                document.querySelector('.question-container').style.display = 'none';
+                document.getElementById('final-message').classList.add('active');
+            } else {
+                // Hayır dediyse bir sonraki soruya geç
+                currentQuestion++;
+                
+                if (currentQuestion >= questions.length) {
+                    // Tüm sorulara hayır dediyse üzgün mesaj göster
+                    document.querySelector('.question-container').style.display = 'none';
+                    document.getElementById('sad-message').classList.add('active');
+                } else {
+                    document.getElementById('question-title').textContent = questions[currentQuestion];
+                    updateAnimal();
+                }
+            }
+        }
+
+        // Initialize
+        document.getElementById('question-title').textContent = questions[0];
+        updateAnimal();
+        startEmojiAnimation();
+        setInterval(updateAnimal, 2000);
+    </script>
+</body>
+</html>
